@@ -20,7 +20,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "antlr4ts": ["node_modules/antlr4ts"],
+      "antlr4ts/*": ["node_modules/antlr4ts/*"]
+    }
   },
   "include": ["src"]
 }

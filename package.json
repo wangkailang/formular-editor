@@ -7,11 +7,15 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "antlrgen": "rm -rf src/parser && antlr4ts ExcelFormula.g4 -visitor -no-listener -o src/parser"
   },
   "dependencies": {
+    "antlr4ts": "0.5.0-alpha.4",
+    "antlr4ts-cli": "0.5.0-alpha.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "vite-plugin-node-polyfills": "^0.23.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

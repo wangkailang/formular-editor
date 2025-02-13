@@ -1,6 +1,7 @@
 grammar ExcelFormula;
 
 formula: '=' expr EOF;
+
 expr:
     expr op=('+'|'-'|'*'|'/') expr   # BinaryOp
   | '(' expr ')'                     # Parens
@@ -12,7 +13,7 @@ expr:
 
 arguments: expr (',' expr)*;
 
-FUNCTION_NAME: [A-Za-Z]+[A-Za-z0-9]*;
+FUNCTION_NAME: [A-Za-z]+[A-Za-z0-9]*;
 CELL_REFERENCE: [A-Z]+[0-9]+;
 NUMBER: [0-9]+ ('.' [0-9]+)?;
 STRING: '"' .*? '"';
