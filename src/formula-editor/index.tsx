@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState, useMemo } from 'react';
 import { ExcelFormulaLexer } from '../parser/ExcelFormulaLexer';
 import { ExcelFormulaParser } from '../parser/ExcelFormulaParser';
 // import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
@@ -6,6 +7,8 @@ import { FormulaErrorListener } from './FormulaErrorListener';
 import { CharStreams } from 'antlr4ts/CharStreams';
 import { CommonTokenStream } from 'antlr4ts/CommonTokenStream';
 import { highlightTokens } from './utils';
+import { FormulaCalculator } from './FormulaCalculator';
+import { DefaultCellProvider } from './CellContext';
 
 interface FormulaEditorProps {
   onParseSuccess?: (result: any) => void;
@@ -17,6 +20,9 @@ export const FormulaEditor: React.FC<FormulaEditorProps> = ({
   onParseError,
 }) => {
   const [formula, setFormula] = useState('');
+  const [result, setResult] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const cellProvider = useMemo(() => new DefaultCellProvider(), []);
 
   // 解析逻辑
   const parseFormula = (input: string) => {
@@ -42,8 +48,26 @@ export const FormulaEditor: React.FC<FormulaEditorProps> = ({
     
     if (errorListener.errors.length > 0) {
       onParseError?.(errorListener.errors);
+      setError(errorListener.errors.join('\n'));
     } else {
+      // try {
+      //   const calculator = new FormulaCalculator(cellProvider);
+      //   const value = calculator.visit(parseTree);
+
+      //   console.log('value', value);
+        
+      //   // if (value instanceof Error) {
+      //   //   setResult(`Error: ${value.message}`);
+      //   // } else {
+      //   //   setResult(`Result: ${value}`);
+      //   // }
+      // } catch (e) {
+      //   setResult('Invalid formula');
+      // }
+      const calculator = new FormulaCalculator(cellProvider);
+      calculator.visitFormula(parseTree);
       onParseSuccess?.(parseTree);
+      setError(null);
     }
   };
 
@@ -56,9 +80,17 @@ export const FormulaEditor: React.FC<FormulaEditorProps> = ({
           setFormula(e.target.value);
           parseFormula(e.target.value);
         }}
-        placeholder="Enter formula starting with ="
+        placeholder="Enter formula here..."
       />
-      {highlightTokens(formula)}
+      {error && <div className="text-red-500">{error}</div>}
+      <h2>Formula highlight:</h2>
+      <div className="border-1 border-solid border-gray-300 p-2 mt-2">
+        {highlightTokens(formula)}
+      </div>
+      <div>
+        <h2>Result:</h2>
+        <div>{result}</div>
+      </div>
     </div>
   );
 };

@@ -3,14 +3,17 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
-import { BinaryOpContext } from "./ExcelFormulaParser";
-import { ParensContext } from "./ExcelFormulaParser";
-import { FunctionCallContext } from "./ExcelFormulaParser";
-import { CellRefContext } from "./ExcelFormulaParser";
-import { NumberContext } from "./ExcelFormulaParser";
-import { StringLiteralContext } from "./ExcelFormulaParser";
+import { LiteralExprContext } from "./ExcelFormulaParser";
+import { CellRefExprContext } from "./ExcelFormulaParser";
+import { FunctionExprContext } from "./ExcelFormulaParser";
+import { ParensExprContext } from "./ExcelFormulaParser";
+import { MulDivExprContext } from "./ExcelFormulaParser";
+import { AddSubExprContext } from "./ExcelFormulaParser";
 import { FormulaContext } from "./ExcelFormulaParser";
 import { ExprContext } from "./ExcelFormulaParser";
+import { LiteralContext } from "./ExcelFormulaParser";
+import { CellReferenceContext } from "./ExcelFormulaParser";
+import { FunctionCallContext } from "./ExcelFormulaParser";
 import { ArgumentsContext } from "./ExcelFormulaParser";
 
 
@@ -23,52 +26,52 @@ import { ArgumentsContext } from "./ExcelFormulaParser";
  */
 export interface ExcelFormulaVisitor<Result> extends ParseTreeVisitor<Result> {
 	/**
-	 * Visit a parse tree produced by the `BinaryOp`
+	 * Visit a parse tree produced by the `LiteralExpr`
 	 * labeled alternative in `ExcelFormulaParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitBinaryOp?: (ctx: BinaryOpContext) => Result;
+	visitLiteralExpr?: (ctx: LiteralExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by the `Parens`
+	 * Visit a parse tree produced by the `CellRefExpr`
 	 * labeled alternative in `ExcelFormulaParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitParens?: (ctx: ParensContext) => Result;
+	visitCellRefExpr?: (ctx: CellRefExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by the `FunctionCall`
+	 * Visit a parse tree produced by the `FunctionExpr`
 	 * labeled alternative in `ExcelFormulaParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitFunctionCall?: (ctx: FunctionCallContext) => Result;
+	visitFunctionExpr?: (ctx: FunctionExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by the `CellRef`
+	 * Visit a parse tree produced by the `ParensExpr`
 	 * labeled alternative in `ExcelFormulaParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitCellRef?: (ctx: CellRefContext) => Result;
+	visitParensExpr?: (ctx: ParensExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by the `Number`
+	 * Visit a parse tree produced by the `MulDivExpr`
 	 * labeled alternative in `ExcelFormulaParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitNumber?: (ctx: NumberContext) => Result;
+	visitMulDivExpr?: (ctx: MulDivExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by the `StringLiteral`
+	 * Visit a parse tree produced by the `AddSubExpr`
 	 * labeled alternative in `ExcelFormulaParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	visitStringLiteral?: (ctx: StringLiteralContext) => Result;
+	visitAddSubExpr?: (ctx: AddSubExprContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `ExcelFormulaParser.formula`.
@@ -83,6 +86,27 @@ export interface ExcelFormulaVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitExpr?: (ctx: ExprContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `ExcelFormulaParser.literal`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitLiteral?: (ctx: LiteralContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `ExcelFormulaParser.cellReference`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitCellReference?: (ctx: CellReferenceContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `ExcelFormulaParser.functionCall`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFunctionCall?: (ctx: FunctionCallContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `ExcelFormulaParser.arguments`.

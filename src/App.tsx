@@ -1,4 +1,5 @@
 import { FormulaEditor } from './formula-editor';
+import { ChevrotainFormulaEditor } from './chevrotain-formula-editor';
 import './App.css'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         onParseError={(errors) => console.error(errors)}
         onParseSuccess={(ast) => console.log(ast)}
       />
+      <ChevrotainFormulaEditor/>
     </>
   )
 }
